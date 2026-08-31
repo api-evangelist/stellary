@@ -1,0 +1,71 @@
+name: Stellary
+description: >-
+  AI-native project-management software for teams and AI agents, offering an AI Kanban board, knowledge base, cockpit
+  dashboards, AI agent orchestration, automations, plugins, a built-in remote MCP server, and a REST API.
+url: https://raw.githubusercontent.com/api-evangelist/stellary-mcp-server/refs/heads/main/apis.yml
+created: '2026-08-31'
+modified: '2026-08-31'
+specificationVersion: '0.21'
+tags:
+  - project-management
+  - productivity
+  - AI-agents
+  - agent-orchestration
+  - MCP
+  - remote-mcp
+  - developer-tools
+  - SaaS
+  - collaboration
+apis:
+  - name: Stellary MCP Server
+    description: >-
+      Hosted remote MCP server (streamable HTTP) exposing board read/write, cockpit supervision, agent runtime, and
+      auto-registered plugin tools. Bearer-authenticated. Listed in the official MCP registry as
+      io.github.Anymfah/stellary-project-management (active, v0.12.0).
+    humanURL: https://stellary.co/docs/mcp/
+    baseURL: https://api.stellary.co/mcp
+    tags:
+      - project-management
+      - productivity
+      - AI-agents
+      - agent-orchestration
+      - MCP
+      - remote-mcp
+      - developer-tools
+      - SaaS
+      - collaboration
+    properties:
+      - type: MCPServer
+        url: https://api.stellary.co/mcp
+      - type: Documentation
+        url: https://stellary.co/docs/mcp/
+      - type: LLMsTxt
+        url: https://stellary.co/llms.txt
+  - name: Stellary REST API
+    description: >-
+      REST API at the application root covering auth/identity, organizations/workspaces/projects, delivery (cards,
+      comments, attachments, labels), documents, AI runtime (agents, missions, drafts), platform (plugins, skills,
+      pipelines, automations), pilotage/cockpit, and billing. Bearer token auth via JWT or personal access token.
+    humanURL: https://stellary.co/docs/api/
+    baseURL: https://api.stellary.co
+    tags:
+      - project-management
+      - productivity
+      - AI-agents
+      - agent-orchestration
+      - MCP
+      - remote-mcp
+      - developer-tools
+      - SaaS
+      - collaboration
+    properties:
+      - type: Documentation
+        url: https://stellary.co/docs/api/
+maintainers:
+  - FN: Anymfah
+    url: https://github.com/Anymfah/stellary-mcp
+generated:
+  by: apis.io/add
+  model: claude-opus-4-8
+  confidence: 90
+  at: '2026-08-31T22:42:09.571Z'
