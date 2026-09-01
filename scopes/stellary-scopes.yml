@@ -1,0 +1,69 @@
+generated: '2026-09-01'
+method: searched
+source: https://stellary.co/docs/api/#api-tokens
+docs: https://stellary.co/docs/api/
+probed:
+- url: https://api.stellary.co/.well-known/oauth-authorization-server
+  status: 200
+  field: scopes_supported
+- url: https://api.stellary.co/.well-known/oauth-protected-resource/mcp
+  status: 200
+  field: scopes_supported
+note: >-
+  Stellary publishes no OpenAPI, so nothing here is derived from a spec. The OAuth set is read
+  verbatim from live RFC 8414/RFC 9728 metadata; the two additional account/notification scopes
+  come from the "Available scopes" list on the API tokens section of the REST reference. The two
+  lists differ on purpose: the OAuth authorization server advertises the five scopes an MCP client
+  can request, while a personal access token can carry seven. That gap is a real finding, not an
+  omission -- an agent connecting over OAuth cannot obtain notifications:read, account:read or
+  account:write, and the MCP 401 challenge names only the four project/pilotage scopes.
+authorization_server: https://api.stellary.co/
+protected_resource: https://api.stellary.co/mcp
+scopes:
+- name: projects:read
+  description: Read projects, boards, columns, cards, comments and delivery context.
+  oauth: true
+  personal_access_token: true
+  challenge_advertised: true
+- name: projects:write
+  description: Create and modify projects, cards, comments, assignments and card movement.
+  oauth: true
+  personal_access_token: true
+  challenge_advertised: true
+- name: pilotage:read
+  description: Read cockpit/pilotage state, dashboards, missions, priorities and pending proposals.
+  oauth: true
+  personal_access_token: true
+  challenge_advertised: true
+- name: pilotage:write
+  description: Create and act on pilotage actions, decisions and proposals.
+  oauth: true
+  personal_access_token: true
+  challenge_advertised: true
+- name: offline_access
+  description: Issue a rotating refresh token so the client can renew the one-hour access token.
+  oauth: true
+  personal_access_token: false
+  challenge_advertised: false
+- name: notifications:read
+  description: Read account notifications.
+  oauth: false
+  personal_access_token: true
+  challenge_advertised: false
+- name: account:read
+  description: Read account profile data.
+  oauth: false
+  personal_access_token: true
+  challenge_advertised: false
+- name: account:write
+  description: Modify account profile data.
+  oauth: false
+  personal_access_token: true
+  challenge_advertised: false
+guidance:
+  provider_recommendation: >-
+    Stellary's own SKILL.md tells an agent to start with projects:read and pilotage:read and to add
+    write scopes only when needed.
+  enforcement: >-
+    Scope is not the only gate. Every call is rechecked against the selected identity's status,
+    project access, role, tool policy, autonomy mode and mission snapshot.

@@ -1,0 +1,105 @@
+generated: '2026-09-01'
+method: searched
+source: https://stellary.co/docs/api/#errors
+probed:
+- url: https://api.stellary.co/plugins
+  status: 401
+- url: https://api.stellary.co/organizations
+  status: 401
+- url: https://api.stellary.co/openapi.json
+  status: 404
+- url: https://api.stellary.co/mcp
+  status: 401
+format: custom-json
+rfc9457: false
+rfc9457_note: >-
+  Not RFC 9457. Responses are application/json, not application/problem+json, and carry no type,
+  title, detail or instance member. Stellary uses the default NestJS exception-filter envelope,
+  normalized by a global HTTP exception filter so the top-level shape stays stable while
+  validation payloads may add extra fields.
+envelope:
+  content_type: application/json; charset=utf-8
+  fields:
+  - name: statusCode
+    type: integer
+    description: HTTP status code, repeated in the body.
+  - name: message
+    type: string | array
+    description: Human-readable message. Validation errors may return an array of messages.
+  - name: error
+    type: string
+    description: HTTP reason phrase, e.g. "Bad Request", "Unauthorized", "Not Found".
+  - name: requestId
+    type: string (uuid)
+    description: >-
+      Correlation id, present on the live error responses probed. Also returned as the X-Request-ID
+      response header, which the API explicitly exposes to browsers via
+      Access-Control-Expose-Headers.
+    observed: true
+  example_documented: |
+    {
+      "statusCode": 400,
+      "message": "Project name is required",
+      "error": "Bad Request"
+    }
+  example_observed: |
+    {
+      "statusCode": 401,
+      "message": "Authentication required",
+      "error": "Unauthorized",
+      "requestId": "783e1610-dbdd-41b9-9613-130411652fa0"
+    }
+problem_types:
+- status: 400
+  error: Bad Request
+  title: Validation failed
+  message_example: Project name is required
+  remediation: Correct the request body against the documented parameters and retry. Validation payloads may add per-field detail.
+  source: docs
+- status: 401
+  error: Unauthorized
+  title: Authentication required
+  message_example: Authentication required
+  remediation: >-
+    Send Authorization: Bearer <jwt-or-personal-access-token>. Check the Bearer format, expiry,
+    revocation state and selected scopes. An OAuth MCP client should follow the WWW-Authenticate
+    challenge and reopen consent.
+  source: probed
+  observed_on: [GET /plugins, GET /organizations]
+- status: 401
+  error: Unauthorized
+  title: Bearer token required (MCP transport)
+  message_example: '{"error":"Bearer token required"}'
+  remediation: >-
+    Distinct, shorter envelope returned by the /mcp transport gate before the MCP handler is
+    reached. It carries a WWW-Authenticate header naming the RFC 9728 resource metadata document
+    and the required scopes. Note this response does NOT carry statusCode/message/error/requestId
+    -- the MCP endpoint does not use the REST error envelope.
+  source: probed
+  observed_on: [POST /mcp]
+- status: 404
+  error: Not Found
+  title: Route not found
+  message_example: 'Cannot GET /openapi.json'
+  remediation: Check the path against the REST reference. The message echoes the method and path.
+  source: probed
+- status: 403
+  error: Forbidden
+  title: Permission or policy denied
+  remediation: >-
+    Documented behaviorally rather than as an example payload: calls are rechecked against project
+    access, workspace permissions, agent status, tool policy and autonomy mode. Recorded here as a
+    documented condition, not an observed status code.
+  source: docs (inferred condition)
+  observed: false
+tool_layer_errors:
+  note: >-
+    On the MCP surface, a policy refusal is not always an HTTP error. Under supervised or approval
+    autonomy a write returns a persisted PROPOSAL instead of a mutation. Stellary's own skill tells
+    agents to surface that to the user and call list_pending_proposals rather than retrying blindly.
+  conditions:
+  - actingAs required (more than one authorized identity on the OAuth connection)
+  - identity unavailable (agent suspended, disabled or removed from the grant)
+  - tool requires a user token (session is using MCP_TOKEN or an anonymous context)
+  - tool requires a workspace context (call needs an agent token, not a human PAT)
+  - plugin tool visible but failing (plugin not installed/enabled, or missing decrypted config)

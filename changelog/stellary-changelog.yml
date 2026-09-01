@@ -1,0 +1,89 @@
+generated: '2026-09-01'
+method: searched
+source: https://stellary.co/docs/changelog/
+title: What's new
+scheme: semver (product releases, 0.x)
+current_version: 0.13.0
+current_version_date: '2026-08-20'
+cadence: irregular; major product releases roughly monthly through 2026
+scope: >-
+  Product-level release notes for the Stellary application. There is no separate API changelog and
+  no per-endpoint breaking-change log; API-affecting items appear inline in the product entries
+  (e.g. the 0.11.0 automations-trigger and MCP autonomy items).
+note: >-
+  The MCP discovery repository (github.com/Anymfah/stellary-mcp) versions independently and is
+  currently at 0.13.0 with a 0.12.0 GitHub release tag dated 2026-08-30. The product changelog and
+  the MCP server manifest happen to share a 0.13.0 label but are not the same version line.
+entries:
+- version: 0.13.0
+  date: '2026-08-20'
+  title: Stellary opens on Iris and keeps the rest within reach
+  breaking: []
+  additions:
+  - Home opens on Iris; a workspace can be created from a conversation or set up by the assistant.
+  - Onboarding adapts to the domain, suggests modules, and warns when agents are given full autonomy.
+  - Cards open on Activity (missions, comments, questions); Overview and Structure move one click away.
+  - Shortened card context menu; assignee, dates and labels become submenus.
+  - Workflows, Knowledge and Team can be shown or hidden per user preference without changing permissions.
+- version: 0.12.0
+  date: '2026-06-06'
+  title: Local AI apps, the mindmap view, and release guardrails
+  breaking: []
+  additions:
+  - Agent missions run through local CLIs and servers (Codex, Claude, Cursor, LM Studio and other runners) with a workspace catalog of shared models.
+  - Refreshed local runners panel with execution, models, repos, queue and run-history tabs plus capability badges.
+  - Project mindmap view alongside the Kanban board.
+  - Stricter checks on auth, onboarding, board, pipelines, uploads, billing, deletion and error states.
+  - Accessibility, mobile, SEO, performance and observability hardening.
+- version: 0.11.0
+  date: '2026-05-27'
+  title: Project setup, automations, and desktop flows get more reliable
+  breaking: []
+  additions:
+  - AI wizard goes straight into roadmap generation.
+  - Google and GitHub sign-up made consistent across web and desktop.
+  - All 7 automation triggers accepted by the API; move/status/priority/assign/archive actions match the engine, existing rules stay compatible.
+  - X added to the documented plugin surface; MCP-only agents keep their configured autonomy mode.
+  - Card Activity replies no longer double-submit.
+  notes:
+  - macOS desktop build temporarily paused while Apple signing is prepared.
+- version: 0.10.0
+  date: '2026-04-29'
+  title: Documents, pipelines, and AI memory all step up at once
+  breaking: []
+  additions:
+  - Document library becomes an explorer (folders, breadcrumbs, list/grid/icon views, reading mode).
+  - Pipelines gain scope/project/workspace availability, waiting_input status and a debug test-run.
+  - AI memory and knowledge search with DocumentChunk segments, scoring and conflict handling.
+  - Upcoming plugins catalog (Cursor, Linear, Jira, Notion, GitLab, Sentry, Figma, Datadog, Stripe).
+- version: 0.9.0
+  date: '2026-03-14'
+  title: The project wizard gets sharper
+  breaking: []
+  additions:
+  - AI-recommended options, date questions and free-text feedback on roadmap regeneration.
+  - Generated structure starts closer to execution.
+- version: 0.8.0
+  date: '2026-03-14'
+  title: AI-assisted project setup and real-time collaboration
+  breaking: []
+  additions:
+  - AI-assisted project creation from a multi-step draft.
+  - Live card sync across workspace members.
+  - Card templates and board screens integrated into the full experience.
+- version: 0.4.0
+  date: '2026-03-13'
+  title: Multi-workspace collaboration platform
+  breaking: []
+  additions:
+  - Organizations, workspaces and invites.
+  - Password reset, email verification, 2FA and API tokens.
+  - Board automations, card relations, custom fields, list view and stats.
+- version: 0.3.0
+  date: '2026-03-12'
+  title: Pilotage, planning, and cross-project visibility
+  breaking: []
+  additions:
+  - Cockpit for priorities, missions, todos, decisions and proposed actions.
+  - Dates, priorities, calendar view and project portfolio.
+community: https://discord.com/invite/ZwR26xNqVb

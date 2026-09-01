@@ -1,0 +1,185 @@
+generated: '2026-09-01'
+method: probed
+source: >-
+  live probes of https://api.stellary.co/.well-known/oauth-authorization-server,
+  https://api.stellary.co/.well-known/oauth-protected-resource/mcp and https://api.stellary.co/mcp,
+  plus https://stellary.co/docs/mcp/ and https://registry.modelcontextprotocol.io
+note: >-
+  Stellary's conformance story is entirely in the agent-protocol lane. It implements the full MCP
+  OAuth discovery chain correctly -- which is unusual: most MCP servers in the catalog answer a
+  bare 401 with no RFC 9728 pointer. It implements nothing from the classic REST-standards lane.
+
+standards:
+- id: mcp
+  name: Model Context Protocol
+  conforms: true
+  evidence:
+    endpoint: https://api.stellary.co/mcp
+    transport: Streamable HTTP (GET + POST, stateless, no Mcp-Session-Id)
+    registry: >-
+      Listed in the official MCP registry as io.github.Anymfah/stellary-project-management,
+      status active, remotes[0].type streamable-http
+    registry_url: https://registry.modelcontextprotocol.io/v0/servers?search=stellary
+    http_status: 401
+    note: Live and correctly challenging; tools/list is auth-gated.
+
+- id: oauth2
+  name: OAuth 2.1 authorization code with PKCE
+  conforms: true
+  evidence:
+    metadata: https://api.stellary.co/.well-known/oauth-authorization-server
+    http_status: 200
+    code_challenge_methods_supported: [S256]
+    grant_types_supported: [authorization_code, refresh_token]
+    response_types_supported: [code]
+    note: PKCE S256 only; no implicit or password grant advertised. Refresh-token rotation documented.
+
+- id: rfc8414
+  name: OAuth 2.0 Authorization Server Metadata
+  conforms: true
+  evidence:
+    url: https://api.stellary.co/.well-known/oauth-authorization-server
+    http_status: 200
+    issuer: https://api.stellary.co/
+    fields_present: [issuer, authorization_endpoint, token_endpoint, registration_endpoint, revocation_endpoint, scopes_supported, code_challenge_methods_supported, service_documentation]
+
+- id: rfc9728
+  name: OAuth 2.0 Protected Resource Metadata
+  conforms: true
+  evidence:
+    url: https://api.stellary.co/.well-known/oauth-protected-resource/mcp
+    http_status: 200
+    resource: https://api.stellary.co/mcp
+    authorization_servers: [https://api.stellary.co/]
+    advertised_by: >-
+      The 401 on POST /mcp carries
+      WWW-Authenticate: Bearer resource_metadata="https://api.stellary.co/.well-known/oauth-protected-resource/mcp"
+      -- the challenge and the document agree, which is the part most implementations get wrong.
+
+- id: rfc7591
+  name: OAuth 2.0 Dynamic Client Registration
+  conforms: true
+  evidence:
+    registration_endpoint: https://api.stellary.co/register
+    source: authorization-server metadata, http_status 200
+    note: Endpoint advertised in metadata; not exercised (registering a client is a write against production).
+
+- id: rfc7009
+  name: OAuth 2.0 Token Revocation
+  conforms: true
+  evidence:
+    revocation_endpoint: https://api.stellary.co/revoke
+    revocation_endpoint_auth_methods_supported: [client_secret_post]
+    source: authorization-server metadata, http_status 200
+
+- id: rfc6750
+  name: OAuth 2.0 Bearer Token Usage
+  conforms: true
+  evidence:
+    header: 'Authorization: Bearer <token>'
+    challenge: 'WWW-Authenticate: Bearer ... scope="projects:read projects:write pilotage:read pilotage:write"'
+    http_status: 401
+
+- id: hsts
+  name: HTTP Strict Transport Security
+  conforms: true
+  evidence:
+    header: 'strict-transport-security: max-age=31536000; includeSubDomains'
+    hosts: [stellary.co, api.stellary.co]
+
+- id: oidc
+  name: OpenID Connect Discovery
+  conforms: false
+  evidence:
+    url: https://api.stellary.co/.well-known/openid-configuration
+    http_status: 404
+    note: >-
+      OAuth 2.1 only. No id_token, no userinfo endpoint, no OIDC discovery document. Google and
+      GitHub social sign-in exist for end users but are not exposed as an OIDC surface to clients.
+
+- id: openapi
+  name: OpenAPI
+  conforms: false
+  evidence:
+    probed:
+    - {url: 'https://api.stellary.co/openapi.json', status: 404}
+    - {url: 'https://api.stellary.co/openapi.yaml', status: 404}
+    - {url: 'https://api.stellary.co/swagger.json', status: 404}
+    - {url: 'https://api.stellary.co/api-docs', status: 404}
+    - {url: 'https://api.stellary.co/docs', status: 404}
+    - {url: 'https://api.stellary.co/v1/openapi.json', status: 404}
+    - {url: 'https://stellary.co/openapi.json', status: 404}
+    - {url: 'https://stellary.co/apis.json', status: 404}
+    note: >-
+      Their own API reference states the Swagger UI is exposed in non-production builds only, at
+      /api/docs. So a spec is generated internally and deliberately not published.
+
+- id: rfc9457
+  name: Problem Details for HTTP APIs
+  conforms: false
+  evidence:
+    content_type: application/json (not application/problem+json)
+    body: '{statusCode, message, error, requestId}'
+    note: Default NestJS envelope normalized by a global exception filter. See errors/stellary-problem-types.yml.
+
+- id: idempotency
+  name: Idempotent request keys
+  conforms: false
+  evidence: No Idempotency-Key header or retry-safety guidance anywhere in the published docs or the provider's SKILL.md.
+
+- id: pagination
+  name: Documented pagination
+  conforms: false
+  evidence: No limit/offset/cursor parameters or pagination envelope documented on any list route.
+
+- id: graphql
+  name: GraphQL
+  conforms: false
+  evidence:
+    probed:
+    - {url: 'https://api.stellary.co/graphql', status: 404, method: GET}
+    - {url: 'https://api.stellary.co/graphql', status: 404, method: POST introspection}
+
+- id: asyncapi
+  name: AsyncAPI
+  conforms: false
+  evidence: >-
+    No AsyncAPI document and no published webhook catalog. The only event-shaped surfaces are an SSE
+    stream on agent-runtime/card-mission and MCP long-polling via wait_for_mission -- neither is a
+    subscribable third-party event surface.
+
+- id: a2a
+  name: A2A Agent Card
+  conforms: false
+  evidence:
+    probed:
+    - {url: 'https://api.stellary.co/.well-known/agent-card.json', status: 404}
+    - {url: 'https://api.stellary.co/.well-known/agent.json', status: 404}
+    - {url: 'https://stellary.co/.well-known/agent-card.json', status: 404}
+    - {url: 'https://stellary.co/.well-known/agent.json', status: 404}
+
+domain_standard:
+  market: agent tooling / AI project management
+  standard: Model Context Protocol
+  declared: true
+  where: >-
+    Declared in the contract surface itself, not only in marketing copy: the server is published to
+    the official MCP registry under io.github.Anymfah/stellary-project-management with a
+    server.json validated against
+    https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json, and the live
+    endpoint speaks Streamable HTTP with the MCP-specified OAuth challenge chain.
+  evidence:
+  - {url: 'https://registry.modelcontextprotocol.io/v0/servers?search=stellary', status: 200}
+  - {url: 'https://raw.githubusercontent.com/Anymfah/stellary-mcp/main/server.json', status: 200}
+  - {url: 'https://api.stellary.co/.well-known/oauth-protected-resource/mcp', status: 200}
+  note: >-
+    Project management has no cross-vendor data standard to conform to (no equivalent of FHIR or
+    SCIM for boards and cards), so the only domain standard available in this market is the agent
+    protocol -- and Stellary implements it in the contract rather than claiming it in prose.
+
+compliance_certifications:
+  published: false
+  evidence: >-
+    No SOC 2, ISO 27001, PCI, HIPAA or FedRAMP claim appears on the site, and no trust center
+    exists (https://stellary.co/trust/ 404, https://stellary.co/security/ 404). A DPA is published
+    at https://stellary.co/dpa/ (200), which is a contractual document, not a certification.

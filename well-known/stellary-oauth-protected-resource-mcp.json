@@ -1,0 +1,1 @@
+{"resource":"https://api.stellary.co/mcp","authorization_servers":["https://api.stellary.co/"],"scopes_supported":["projects:read","projects:write","pilotage:read","pilotage:write","offline_access"],"resource_name":"Stellary MCP","resource_documentation":"https://stellary.co/docs/mcp/"}

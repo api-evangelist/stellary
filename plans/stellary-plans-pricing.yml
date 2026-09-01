@@ -1,0 +1,62 @@
+generated: '2026-09-01'
+method: searched
+source: https://stellary.co/plans/
+currency: EUR
+billing_period: month
+commitment: none (month-to-month, cancel anytime)
+plan_count: 2
+note: >-
+  Both published plans cost EUR 0. Stellary is in beta: "Discovery" is the open free tier and
+  "Beta Tester" is invitation-only through their Discord. There is no paid tier on the public
+  pricing page, and no enterprise "contact us" tier either. Billing plumbing exists in the API
+  (POST /organizations/:orgSlug/billing/checkout) but no priced plan is published against it.
+  The page states the values mirror the active application configuration.
+included_in_every_plan:
+- Real-time sync
+- MCP server
+- REST API
+- Context search
+- Roles and permissions
+plans:
+- name: Discovery
+  slug: free
+  price: 0
+  currency: EUR
+  period: month
+  availability: open self-serve
+  cta: https://app.stellary.co/register
+  quotas:
+    workspaces: 1
+    projects: 5
+    members: 10
+    ai_agents: 8
+    documents: 50
+    custom_fields: 5
+    automations: 5
+    ai_credits_per_month: 700
+    included_seats: 2
+  overage: not published
+  api_rate_limit: not attached to the tier
+- name: Beta Tester
+  slug: beta-tester
+  price: 0
+  currency: EUR
+  period: month
+  availability: invitation only, via Discord
+  cta: https://discord.com/invite/ZwR26xNqVb
+  quotas:
+    workspaces: 10
+    projects: 50
+    members: 50
+    ai_agents: 100
+    documents: 2000
+    custom_fields: 50
+    automations: 50
+    ai_credits_per_month: 5000
+    included_seats: 10
+  overage: not published
+  api_rate_limit: not attached to the tier
+self_service:
+  note: >-
+    Organization settings expose available plans, current usage, invoices and billing actions;
+    plan changes are made in-app.

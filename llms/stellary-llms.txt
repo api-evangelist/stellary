@@ -1,0 +1,104 @@
+# Stellary
+
+> Stellary is AI-powered project management software for delivery, documentation, MCP, and AI agents. Centralize context, guide execution, and pilot projects from one command center.
+
+Stellary unifies cards, documents, cockpit-style piloting, automations, and specialized AI agents inside the same workspace, so humans and agents share one operational source of truth — instead of working from disconnected tools.
+
+## Product
+
+- [Features](https://stellary.co/features/): Delivery workspace, shared context, custom dashboards, actionable widgets, AI agents, automations, MCP, REST API.
+- [AI Kanban board](https://stellary.co/ai-kanban-board/): Shared cards, project context, mission execution, Activity, and approvals for humans and AI agents.
+- [Project management MCP server](https://stellary.co/project-management-mcp-server/): Remote MCP access to projects, cards, documents, mission queues, and governed tools.
+- [AI agent project management](https://stellary.co/ai-agent-project-management/): Roles, mission context, local and cloud execution, memory, tools, and autonomy policy.
+- [AI agent orchestration](https://stellary.co/ai-agent-orchestration/): Specialized agents, pipelines, reviews, human gates, and visible execution runs.
+- [AI integrations](https://stellary.co/integrations/): Setup guides for Claude Code, Codex, Cursor, Claude Desktop, LM Studio, and AnythingLLM.
+- [Plans & pricing](https://stellary.co/plans/): Discovery (free) and Beta Tester (invitation only via Discord).
+- [Documentation](https://stellary.co/docs/): Implementation-grade docs for the workspace, agents, MCP server, REST API, and automations.
+- [Local AI apps](https://stellary.co/docs/guide/local-ai/): Stellary local runners, shared models, linked repositories, and agent execution.
+- [MCP server documentation](https://stellary.co/docs/mcp/): Tokens, tools, mission queues, plugins, agent access patterns.
+- [REST API reference](https://stellary.co/docs/api/): Endpoints, authentication, payloads, examples.
+- [Getting started](https://stellary.co/docs/getting-started/): Iris home, first project, cards, Activity, first AI mission.
+- [Product changelog](https://stellary.co/docs/changelog/): Major changes shipped in the app.
+
+## Compare Stellary
+
+- [All comparisons](https://stellary.co/compare/): Stellary vs Linear, ClickUp, Notion, monday, and Jira — dated, methodology-backed.
+- [Stellary vs Linear](https://stellary.co/compare/stellary-vs-linear/)
+- [Stellary vs ClickUp](https://stellary.co/compare/stellary-vs-clickup/)
+- [Stellary vs Notion](https://stellary.co/compare/stellary-vs-notion/)
+- [Stellary vs monday](https://stellary.co/compare/stellary-vs-monday/)
+- [Stellary vs Jira](https://stellary.co/compare/stellary-vs-jira/)
+- [Alternatives guides](https://stellary.co/alternatives/): honest alternatives to Linear, ClickUp, and Notion.
+- [Best Linear alternatives](https://stellary.co/alternatives/linear/)
+- [Best ClickUp alternatives](https://stellary.co/alternatives/clickup/)
+- [Best Notion alternatives](https://stellary.co/alternatives/notion/)
+
+## Comparisons & alternatives
+
+- [Notion vs ClickUp vs Linear vs monday: strengths and trade-offs in 2026](https://stellary.co/blog/notion-vs-clickup-vs-linear-vs-monday-2026/): Notion, ClickUp, Linear, and monday do not solve the same problem. How to compare them honestly in 2026: speed, docs, coordination, complexity.
+- [GPT-5.5 vs Claude Fable 5 vs Gemini 3.5 Flash vs Cursor](https://stellary.co/blog/gpt-5-4-vs-claude-opus-4-6-vs-gemini-3-1-pro-vs-composer-2/): Compare GPT-5.5, Claude Fable 5, Gemini 3.5 Flash, and Cursor's agent layer for coding in 2026: strengths, trade-offs, and selection criteria.
+- [Best project management tools for product and engineering teams in 2026](https://stellary.co/blog/best-project-management-tools-product-engineering-2026/): A practical guide to choosing between Linear, Notion, ClickUp, monday, Jira, and the new wave of AI-native tools. Compare speed, context, governance, and real execution.
+- [Best Notion Alternatives in 2026 for Product Teams](https://stellary.co/blog/best-notion-alternatives-product-teams-2026/): Looking for the best Notion alternative in 2026? Compare ClickUp, Coda, Linear, Confluence plus Jira, and AI-native delivery systems by docs and execution fit.
+- [Best Linear Alternatives in 2026 for Product and Engineering Teams](https://stellary.co/blog/best-linear-alternatives-product-engineering-2026/): Looking for the best Linear alternative in 2026? Compare ClickUp, Jira, Notion, monday, and AI-native workflows by speed, docs, governance, and team fit.
+- [Best ClickUp Alternatives in 2026 for Multi-Project Teams](https://stellary.co/blog/best-clickup-alternatives-multi-project-teams-2026/): Looking for the best ClickUp alternative in 2026? Compare monday, Asana, Jira, Linear, and AI-native systems for multi-project coordination and delivery.
+- [Best AI Project Management Software in 2026](https://stellary.co/blog/ai-project-management-software-2026/): Compare ClickUp, monday, Jira, Linear, Notion, and Stellary for AI project management, agents, governance, context, and execution in 2026.
+- [Top 10 AI Project Management Tools in 2026 for Agentic Teams](https://stellary.co/blog/best-ai-project-management-tools-agentic-teams/): Compare AI project management tools for agentic teams by agents, context, approvals, auditability, automation, integrations, and delivery fit.
+
+## Guides & deep dives
+
+- [Building a video game with AI is easy. Finishing one isn’t.](https://stellary.co/blog/build-video-game-with-ai/): Building a video game with AI takes more than code. Follow a practical method to organize mechanics, assets, tests, decisions, and agents in one project.
+- [Your AI agent says “done”: how to check its work](https://stellary.co/blog/verify-ai-agent-work/): Your AI agent says the job is done. Learn how to check the actual result, find supporting evidence and catch missing work before you sign it off.
+- [Turn a client email into clear tasks with AI](https://stellary.co/blog/client-email-to-tasks/): A worked example and a reusable prompt for turning client emails into tasks, keeping source links, spotting missing details and checking deadlines.
+- [Local, cloud, or hybrid AI: how to choose](https://stellary.co/blog/local-cloud-hybrid-ai-agent/): A simple guide to choosing local, cloud, or hybrid AI based on your documents, budget, internet connection, and everyday needs.
+- [Always setting AI to maximum? That is often a mistake](https://stellary.co/blog/choose-ai-reasoning-effort/): Low, medium, high, or maximum: learn how to choose the right AI reasoning effort without wasting time or budget.
+- [Will AI change your job? 9 practical uses already at work](https://stellary.co/blog/ai-use-cases-by-profession/): Simple examples of how AI can help in administration, sales, healthcare, education, creative work, engineering, and field-based professions.
+- [Claude Fable 5 vs Opus 5: which model should your AI agents use?](https://stellary.co/blog/claude-fable-5-vs-opus-5/): Fable 5 or Opus 5? Choose by mission difficulty and cost per successful task — not by putting Anthropic’s strongest model everywhere.
+- [GPT-5.6 Sol, Terra, and Luna: which OpenAI model should your AI agents use?](https://stellary.co/blog/gpt-5-6-sol-terra-luna/): Sol, Terra, or Luna? Pick GPT-5.6 by mission difficulty, volume, and cost per successful task — not by putting the strongest model everywhere.
+- [Why Context Matters for AI Project Assistants](https://stellary.co/blog/why-context-matters-for-ai/): Learn how fresh, scoped, attributable project context improves AI assistants—and why retrieval, memory, permissions, and model training are different systems.
+- [MCP for AI Coding Tools in 2026: What Actually Changes](https://stellary.co/blog/what-mcp-changes-ai-coding-tools-2026/): A practical guide to MCP for AI coding tools: architecture, client support, security, workflows, limitations, and an evaluation checklist for 2026.
+- [What Is AI Project Management? A Practical Guide for 2026](https://stellary.co/blog/what-is-ai-project-management/): Understand AI project management in 2026: assistants, automations, operational agents, governance, MCP, benefits, risks, and a practical adoption plan.
+- [How to Run Better Sprint Planning with AI in 2026](https://stellary.co/blog/sprint-planning-ai/): Use AI to prepare Sprint Planning evidence, surface dependencies, and compare capacity scenarios while the Scrum Team keeps ownership of the Sprint Goal and forecast.
+- [How to Reduce Unnecessary Meetings with AI](https://stellary.co/blog/reduce-meetings-with-ai/): Use AI standups, decision briefs, and project signals to replace status-only meetings while keeping the conversations that need real-time human judgment.
+- [MCP Explained: How the Model Context Protocol Works](https://stellary.co/blog/model-context-protocol-explained/): A practical explanation of MCP architecture, tools, resources, transports, permissions, and the compatibility limits teams should understand before connecting AI to work systems.
+- [How to Connect AI Agents to Stellary via MCP](https://stellary.co/blog/mcp-integration-guide/): Connect Cursor, Claude Code, Claude Desktop, or an external agent to Stellary through MCP, with the right endpoint, identity, permissions, and autonomy mode.
+- [Kanban vs. Scrum in the AI Era: How to Choose](https://stellary.co/blog/kanban-vs-scrum-ai-era/): Compare Scrum, Kanban, and hybrid delivery in 2026, then see where AI can prepare evidence without replacing goals, flow policies, or team judgment.
+- [Best AI Model for Code Review, Audits, and Security in 2026](https://stellary.co/blog/best-ai-model-code-review-audits-2026/): How to evaluate GPT-5.5, Claude Fable 5, Gemini 3.5 Flash, and coding agents for code review, audits, and security work in 2026.
+- [Best AI Model for Backend Development in 2026](https://stellary.co/blog/best-ai-model-backend-development-2026/): How to choose between GPT-5.5, Claude Fable 5, Gemini 3.5 Flash, and coding-agent workflows for backend development in 2026.
+- [AI-Assisted Project Piloting: From Signals to Controlled Action](https://stellary.co/blog/ai-project-piloting/): Learn how AI-assisted project piloting connects goals, delivery signals, decisions, agents, and controlled actions without replacing human accountability.
+- [MCP vs REST API: which architecture should you choose for AI agents?](https://stellary.co/blog/ai-agent-mcp-vs-rest-api/): MCP or REST API for an AI agent? Choose based on who picks the operation: the code, the model, or both in a hybrid architecture.
+- [AI agent, AI workflow, or automation: which should you choose in 2026?](https://stellary.co/blog/ai-agent-vs-workflow-vs-automation/): Choose between automation, an AI workflow, an agentic workflow, and a bounded autonomous agent based on who picks the next step, cost, latency, and risk.
+- [AI Model Fusion: Why the Future Is Not One Model, but a Multi-Agent Architecture](https://stellary.co/blog/fusion-modeles-ia-pipelines-multi-agents/): AI model fusion: multi-agent pipelines combine several models, then compare and judge their answers to deliver a more robust result than a single model alone.
+- [The Future of AI Agents Is Orchestration, Not Intelligence](https://stellary.co/blog/future-of-ai-agents-ai-orchestration/): Claude Fable 5, GPT-5.5 and Gemini show the AI race is shifting from smarter models to agent orchestration, memory and execution.
+- [AI Standup: A Better Daily Update from Real Work](https://stellary.co/blog/ai-standup/): Use an AI standup to turn cards, commits, blockers, and agent work into a sharper daily update for remote teams without replacing human judgment.
+- [AI Sprint Retrospective: Bring Facts to the Retro](https://stellary.co/blog/ai-sprint-retrospective/): Run an AI sprint retrospective with evidence from cards, blockers, scope changes, reopened work, and agent activity while humans decide change.
+- [AI Scrum Master: What It Can Do and What It Cannot](https://stellary.co/blog/ai-scrum-master/): An AI scrum master can prepare planning, standups, dependency checks, scope alerts, and retros while team protection stays human and accountable.
+- [AI Backlog Grooming: Keep the Backlog Clean Continuously](https://stellary.co/blog/ai-backlog-grooming/): AI backlog grooming keeps cards fresh by detecting duplicates, stale work, weak descriptions, missing context, and risk before planning starts.
+- [How to Manage AI Agents in Project Management Without Losing Control](https://stellary.co/blog/manage-ai-agents-project-management/): A practical governance framework for AI agents in project management: roles, scope, permissions, approvals, audit trails, MCP tools, and rollout.
+- [Save Hours Every Week with Stellary Automations](https://stellary.co/blog/automations-guide/): Learn how to set up powerful automations that handle repetitive work so your team can focus on what matters.
+- [How AI Improves Remote Team Collaboration in 2026](https://stellary.co/blog/remote-team-collaboration-ai/): Practical strategies for using AI to bridge the gap in distributed teams — from async decision-making to automated standups and intelligent notifications.
+- [Project Management vs. Piloting: The Key Difference](https://stellary.co/blog/project-management-vs-project-piloting/): Project management focuses on execution. Piloting adds strategy. Learn why this distinction matters and how to adopt a piloting mindset.
+- [Knowledge Management for Dev Teams: Stop Losing Context](https://stellary.co/blog/knowledge-management-dev-teams/): Why dev teams lose critical knowledge and how to build a system that keeps documentation alive, searchable, and connected to your workflow.
+- [Documentation and AI Memory: Why Your Agents Should Not Start From Zero](https://stellary.co/blog/documentation-memory-ai-agents/): Why documentation and memory are the two foundations of reliable AI agents: context, RAG, governance, trust, and practical habits for modern teams.
+- [API-First Project Management: Why You Need an API](https://stellary.co/blog/api-first-project-management/): Why API-first PM tools outperform closed ecosystems. How REST APIs, MCP, and programmable workflows enable modern project operations.
+- [Project Management with AI Agents in 2026](https://stellary.co/blog/project-management-with-ai-agents/): What changes when AI agents move from writing updates to real project execution? A practical guide to project management with AI agents in 2026.
+- [How to Connect Docs, Delivery, and AI Agents in One Workflow](https://stellary.co/blog/docs-delivery-and-ai-agents-one-workflow/): Why more teams want one workflow for documentation, project delivery, and AI agents instead of stitching together separate tools.
+
+## Trust & methodology
+
+- [About Stellary](https://stellary.co/about/)
+- [Editorial policy](https://stellary.co/editorial-policy/)
+- [How we compare tools (methodology)](https://stellary.co/methodology/how-we-compare-tools/)
+- [Product ambitions](https://stellary.co/product-ambitions/)
+
+## Reference
+
+- [Sitemap index (XML)](https://stellary.co/sitemap.xml)
+- [Product sitemap](https://stellary.co/sitemap-product.xml)
+- [Documentation sitemap](https://stellary.co/sitemap-docs.xml)
+- [Blog sitemap](https://stellary.co/sitemap-blog.xml)
+- [English RSS feed](https://stellary.co/feed.xml)
+- [French RSS feed](https://stellary.co/fr/feed.xml)
+
+## Localization
+
+A full French version of every product, documentation, and editorial page is available under the `/fr/` prefix. Hreflang alternates are declared on every page.

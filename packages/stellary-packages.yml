@@ -1,0 +1,66 @@
+generated: '2026-09-01'
+method: searched
+source: >-
+  registry.npmjs.org (search + direct), pypi.org, https://stellary.co/docs/ and
+  https://github.com/Anymfah/stellary-mcp
+package_count: 0
+official_sdk_count: 0
+note: >-
+  Stellary ships NO client libraries. Recorded here so the absence is a measured fact rather than an
+  unchecked gap. This is not an oversight on their part -- it is consistent with a remote-only,
+  OAuth-discovered MCP posture: the agent client IS the SDK, and the provider explicitly refuses to
+  ship a local package ("Not supported: local npx/stdio servers", SKILL.md). NO SDKs pointer is
+  wired into apis.yml, because there is no SDK to point at.
+packages: []
+registries_checked:
+- {registry: npm, query: 'search text=stellary', result: no matching package, status: 200}
+- {registry: npm, package: stellary, version: null, published: null, status: 404}
+- {registry: npm, package: stellary-mcp, version: null, published: null, status: 404}
+- {registry: npm, package: '@stellary/mcp', version: null, published: null, status: 404}
+- {registry: npm, package: stellary-mcp-registry-metadata, version: null, published: null, status: 404}
+- {registry: pypi, package: stellary, version: null, published: null, status: 404}
+- {registry: pypi, package: stellary-mcp, version: null, published: null, status: 404}
+- {registry: maven-central, result: not searched - no JVM surface documented}
+- {registry: nuget, result: not searched - no .NET surface documented}
+- {registry: rubygems, result: not searched - no Ruby surface documented}
+- {registry: crates.io, result: not searched - no Rust surface documented}
+- {registry: pkg.go.dev, result: not searched - no Go surface documented}
+non_package_artifacts:
+- name: stellary-mcp-registry-metadata
+  repo: https://github.com/Anymfah/stellary-mcp
+  version: 0.13.0
+  published: null
+  registry: none
+  official: true
+  note: >-
+    The only package.json in the provider's public repo. Marked "private": true and never published
+    to npm (registry.npmjs.org returns 404). It exists to run the repo's own validation scripts
+    (validate-server-json.mjs, validate-openai-plugin.mjs, check-endpoint.mjs), not to be installed
+    by a consumer. version read from the file at HEAD 2026-09-01; the repo publishes no release
+    artifact, so `published` is null.
+- name: Stellary desktop app
+  url: https://stellary.co/download/
+  registry: cdn
+  version: null
+  published: null
+  official: true
+  note: >-
+    A downloadable desktop shell exists and is linked from the site. It is an application download,
+    not a client library, and it is not a registry package -- version null because the download page
+    exposes no pinned version string to read. The macOS build was documented as temporarily paused
+    in the 0.11.0 changelog pending Apple signing.
+distribution_instead_of_packages:
+- channel: MCP registry
+  id: io.github.Anymfah/stellary-project-management
+  version: 0.12.0
+  published: '2026-07-27'
+  official: true
+  note: Official Model Context Protocol registry record; version and date read from the registry API, 2026-09-01.
+- channel: skills.sh / ClawHub
+  command: npx skills add Anymfah/stellary-mcp
+  version: 0.13.0
+  published: null
+  official: true
+  note: >-
+    Installs the provider's SKILL.md, not a runtime library. Version from SKILL.md frontmatter
+    metadata.version; the channel exposes no dated release, so published is null.

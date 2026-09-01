@@ -1,0 +1,45 @@
+generated: '2026-09-01'
+method: searched
+source: https://github.com/Anymfah/stellary-mcp/blob/main/SKILL.md
+note: >-
+  Stellary publishes its own Agent Skill. SKILL.md in the official public MCP discovery repo is a
+  complete, frontmattered Agent Skill (name, description, license, homepage, compatibility,
+  metadata with openclaw env vars) distributed through skills.sh / ClawHub as
+  `npx skills add Anymfah/stellary-mcp`. It is saved here VERBATIM -- nothing in skills/ was
+  authored by API Evangelist.
+skills:
+- file: skills/stellary-mcp.md
+  name: stellary-mcp
+  version: 0.13.0
+  license: MIT
+  method: searched
+  source: https://raw.githubusercontent.com/Anymfah/stellary-mcp/main/SKILL.md
+  api: Stellary MCP Server
+  distribution: npx skills add Anymfah/stellary-mcp
+  description: >-
+    Teaches an agent to use the hosted Stellary remote MCP: connect over Streamable HTTP with
+    OAuth or a PAT, resolve identity with stellary_list_identities/actingAs, read before writing,
+    and run the queued-mission loop (stellary_init -> get_next_mission/wait_for_mission ->
+    complete_mission/fail_mission) under the workspace autonomy policy.
+  tools_referenced:
+  - list_projects
+  - get_project_details
+  - list_cards
+  - get_card_details
+  - get_card_comments
+  - create_card
+  - create_cards_bulk
+  - move_card
+  - update_card
+  - assign_card
+  - add_comment
+  - get_pilotage_state
+  - get_cockpit_dashboard
+  - get_agent_status
+  - list_pending_proposals
+  - stellary_init
+  - get_next_mission
+  - wait_for_mission
+  - complete_mission
+  - fail_mission
+  - stellary_list_identities

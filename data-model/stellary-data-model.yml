@@ -1,0 +1,145 @@
+generated: '2026-09-01'
+method: searched
+source: https://stellary.co/docs/api/ (Route model, Documents, Agents & runtime, Platform, Pilotage sections)
+note: >-
+  Derived from the published REST route model and documented request bodies, NOT from an OpenAPI --
+  Stellary publishes none. Every entity and relationship below is anchored to a documented route or
+  a documented body field; nothing is inferred from product marketing. Cardinalities marked
+  confidence: medium are read from the path nesting rather than from an explicit statement.
+
+id_prefixes:
+  observed_in_docs_examples:
+  - {prefix: 'usr_', entity: User, example: usr_123}
+  - {prefix: 'usr_agent_', entity: Agent (agent user), example: usr_agent_123}
+  - {prefix: 'prj_', entity: Project, example: prj_123}
+  - {prefix: 'card_', entity: Card, example: card_123}
+  - {prefix: 'tok_', entity: ApiToken, example: tok_123}
+  - {prefix: 'sl_', entity: ApiToken secret/prefix, example: sl_abcd12}
+  addressing_note: Organizations and Workspaces are addressed by slug in paths, not by prefixed id.
+
+entities:
+- name: Organization
+  addressed_by: orgSlug
+  routes: [GET /organizations, POST /organizations/:orgSlug/billing/checkout]
+  description: Tenancy root. Owns billing and cross-workspace governance.
+- name: Workspace
+  addressed_by: wsSlug
+  routes: [POST /orgs/:orgSlug/workspaces, 'GET /orgs/:orgSlug/workspaces/:wsSlug']
+  fields: [name, slug]
+  description: Operating unit. Carries members, invitations, roles, settings, agents, documents, plugins, skills and pipelines.
+- name: Invitation
+  routes: [POST /invitations/:token/accept]
+  description: Workspace invitation, accepted by token. Authenticated but not org-scoped.
+- name: Project
+  routes: ['POST /orgs/:orgSlug/workspaces/:wsSlug/projects', 'GET .../projects/:id/roadmap']
+  fields: [name, description, deadline]
+- name: Scope
+  routes: ['POST .../projects/:projectId/scopes']
+  description: Sub-division of a project. Also a document context type.
+- name: View
+  routes: [documented as a sibling controller of scopes]
+  description: Board views/columns configuration.
+- name: Column
+  description: Board column a card sits in. Named in the reference and in the MCP move_card tool.
+- name: Card
+  routes: ['POST .../projects/:projectId/cards']
+  fields: [title, description, priority (low|medium|high), dueDate]
+  description: Unit of delivery. Also the anchor for missions, comments, attachments and linked documents.
+- name: Subtask
+  description: Named in the delivery route family and in MCP checklist/subtask sync.
+- name: Comment
+  routes: ['POST .../cards/:cardId/comments']
+  fields: [content]
+- name: Attachment
+  routes: ['POST .../cards/:cardId/attachments']
+  encoding: multipart/form-data
+- name: Label
+  description: Named in the delivery route family and in MCP board tools.
+- name: CustomField
+  description: Per-workspace custom fields; quota is a published plan limit.
+- name: Document
+  routes: ['POST /orgs/:orgSlug/workspaces/:wsSlug/documents', 'GET .../documents/all']
+  fields: [title, content, contentFormat (markdown|tiptap_json), docType, contextType, contextId, tags]
+  doc_types: [document, spec, brief, adr, note, reference, template, spreadsheet]
+  context_types: [organization, workspace, project, scope]
+- name: DocumentChunk
+  description: Retrieval segment used by AI memory and knowledge search (shipped in 0.10.0). Not exposed as a documented REST route.
+- name: Agent
+  routes: ['POST /orgs/:orgSlug/workspaces/:wsSlug/agents']
+  fields: [name, slug, description, autonomyMode (autonomous|supervised|approval), tools, mcpOnly]
+  description: Workspace-scoped service user with its own token, tool policy and autonomy mode.
+- name: Mission
+  routes: ['POST .../agent-runtime/card-mission']
+  fields: [cardId, projectId]
+  description: Queued or streamed unit of agent execution bound to a card.
+- name: Run
+  routes: ['POST .../agent-runtime/run']
+  fields: [agentUserId, objective, projectId, maxSteps]
+  description: Direct agent execution against an explicit objective.
+- name: Proposal
+  routes: ['GET .../agent-runtime/proposals', 'POST .../pilotage/actions/propose']
+  description: A write an agent attempted under supervised/approval autonomy, persisted for human approval or rejection.
+- name: ProjectDraft
+  routes: ['POST /orgs/:orgSlug/workspaces/:wsSlug/project-drafts']
+  fields: [name, description, contextDocuments, teamMembers]
+  description: AI-assisted project draft that becomes a project structure.
+- name: Plugin
+  routes: [GET /plugins]
+  description: Global plugin catalog entry; installed and configured per workspace. Documented families - GitHub, Slack, Email, Discord, X.
+- name: Skill
+  routes: ['POST .../agents/:agentId/skills/:skillId']
+  description: Workspace skill assignable to an agent.
+- name: Pipeline
+  routes: ['POST /orgs/:orgSlug/workspaces/:wsSlug/pipelines']
+  fields: [name, description, steps, enabled]
+- name: Automation
+  routes: ['POST .../projects/:projectId/automations']
+  fields: [name, trigger, action, enabled]
+  actions: [move_card, set_status, set_priority, assign_user, archive_card]
+  trigger_count: 7
+  trigger_count_source: changelog 0.11.0 - "all 7 triggers are accepted by the API"
+- name: PilotageDashboard
+  routes: ['GET .../pilotage/dashboard', 'GET .../pilotage/portfolio']
+  description: Cockpit state - priorities, missions, todos, decisions, standing orders, briefings.
+- name: User
+  routes: [POST /auth/login, GET /auth/me]
+  fields: [id, email, name, jobTitle, emailVerified, twoFactorEnabled]
+- name: ApiToken
+  routes: [POST /api-tokens, GET /api-tokens]
+  fields: [id, name, tokenPrefix, scopes, expiresAt, createdAt, secret]
+  secret_note: The plaintext secret is returned only once, at creation.
+- name: Notification
+  routes: [GET /notifications]
+
+relationships:
+- {from: Organization, to: Workspace, type: has_many, via: path nesting /orgs/:orgSlug/workspaces, confidence: high}
+- {from: Organization, to: Billing, type: has_one, via: /organizations/:orgSlug/billing, confidence: high}
+- {from: Workspace, to: Project, type: has_many, via: path nesting, confidence: high}
+- {from: Workspace, to: Document, type: has_many, via: contextType workspace + path nesting, confidence: high}
+- {from: Workspace, to: Agent, type: has_many, via: path nesting, confidence: high}
+- {from: Workspace, to: Pipeline, type: has_many, via: path nesting, confidence: high}
+- {from: Workspace, to: Skill, type: has_many, via: workspace skills, confidence: high}
+- {from: Workspace, to: Invitation, type: has_many, via: /invitations/:token/accept, confidence: medium}
+- {from: Project, to: Scope, type: has_many, via: path nesting, confidence: high}
+- {from: Project, to: Card, type: has_many, via: path nesting, confidence: high}
+- {from: Project, to: Automation, type: has_many, via: path nesting, confidence: high}
+- {from: Project, to: Roadmap, type: has_one, via: /projects/:id/roadmap, confidence: high}
+- {from: Scope, to: Card, type: has_many, via: route model /projects/:projectId/scopes/:scopeId, confidence: medium}
+- {from: Card, to: Comment, type: has_many, via: path nesting, confidence: high}
+- {from: Card, to: Attachment, type: has_many, via: path nesting, confidence: high}
+- {from: Card, to: Subtask, type: has_many, via: documented delivery surface, confidence: medium}
+- {from: Card, to: Document, type: has_many, via: '.../cards/:cardId/documents/:documentId/link (many-to-many link table)', confidence: high}
+- {from: Card, to: Label, type: has_many, via: documented delivery surface, confidence: medium}
+- {from: Card, to: Mission, type: has_many, via: agent-runtime/card-mission body cardId, confidence: high}
+- {from: Card, to: Column, type: belongs_to, via: move_card, confidence: high}
+- {from: Document, to: DocumentContext, type: belongs_to, via: contextType + contextId (organization|workspace|project|scope), confidence: high}
+- {from: Agent, to: Skill, type: has_many, via: '.../agents/:agentId/skills/:skillId', confidence: high}
+- {from: Agent, to: Mission, type: has_many, via: agent runtime queue, confidence: high}
+- {from: Agent, to: Run, type: has_many, via: agent-runtime/run body agentUserId, confidence: high}
+- {from: Mission, to: Proposal, type: has_many, via: autonomy policy converting non-read tools into proposals, confidence: high}
+- {from: Mission, to: Comment, type: has_many, via: 'complete_mission/fail_mission post a card comment', confidence: high}
+- {from: User, to: ApiToken, type: has_many, via: /api-tokens, confidence: high}
+- {from: User, to: Notification, type: has_many, via: /notifications, confidence: high}
+- {from: ProjectDraft, to: Project, type: becomes, via: AI wizard roadmap generation, confidence: medium}
+- {from: Plugin, to: MCPTool, type: has_many, via: plugin slug-prefixed tool auto-registration, confidence: high}
+render: none (no subway/ diagram in this repo)

@@ -1,0 +1,72 @@
+generated: '2026-09-01'
+method: searched
+source: https://stellary.co/docs/changelog/ + https://stellary.co/docs/api/ + https://stellary.co/plans/
+note: >-
+  Stellary is a 0.x product in public beta. What exists is a maintained, dated product changelog;
+  what does not exist is any API-level lifecycle governance -- no version segment, no deprecation
+  policy, no sunset headers, no SLA and no status page.
+
+versioning:
+  api: none
+  api_evidence: >-
+    No version path segment, header or media-type version appears in the REST reference. The MCP
+    surface pins the MCP protocol, not a Stellary API version.
+  product: semver 0.x
+  current_product_version: 0.13.0
+  current_product_version_date: '2026-08-20'
+  mcp_server_version: 0.13.0
+  mcp_registry_version: 0.12.0
+  mcp_version_note: >-
+    server.json and the client plugin manifests declare 0.13.0 while the official MCP registry
+    record still lists 0.12.0 as latest (published 2026-07-27). The registry entry is one release
+    behind the repository as of 2026-09-01.
+
+change_log:
+  present: true
+  url: https://stellary.co/docs/changelog/
+  dated: true
+  artifact: changelog/stellary-changelog.yml
+
+deprecation_policy:
+  present: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  evidence: >-
+    No deprecation or sunset policy is published on the docs site, and no Deprecation or Sunset
+    response header was returned by any probed endpoint. The changelog records additions and
+    reliability work; it announces no removals or breaking changes.
+  deprecated_operations: []
+  deprecated_operations_note: No OpenAPI exists to derive deprecated operations from.
+
+status_page:
+  present: false
+  probed:
+  - url: https://status.stellary.co/
+    status: 0
+    detail: DNS does not resolve
+  - url: https://stellary.co/status/
+    status: 404
+  evidence: >-
+    No status page is linked from the site footer, the docs navigation or llms.txt. The closest
+    public health signal is the unauthenticated API root, GET https://api.stellary.co/, which
+    returns {"status":"ok","app":"Stellary"} -- a liveness endpoint, not an incident history.
+  health_endpoint: https://api.stellary.co/
+
+sla:
+  present: false
+  evidence: Both published plans are free (Discovery, and invitation-only Beta Tester); no uptime or support SLA is published.
+
+support:
+  email: support@stellary.co
+  community: https://discord.com/invite/ZwR26xNqVb
+  security_contact: security@stellary.co
+  faq: https://stellary.co/faq/
+
+maturity:
+  stage: public beta
+  evidence: The site badges the product "Beta"; the paid tier is absent and the second plan is invitation-only via Discord.
+  direction: >-
+    https://stellary.co/product-ambitions/ publishes product direction but explicitly disclaims
+    being a roadmap ("Directional, not a roadmap"; "This page explains direction -- not a fixed
+    roadmap or timeline"), so it is not recorded here as a roadmap.

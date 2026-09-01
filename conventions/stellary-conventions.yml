@@ -1,0 +1,178 @@
+generated: '2026-09-01'
+method: searched
+source: https://stellary.co/docs/api/ + https://stellary.co/docs/mcp/ + live probes of https://api.stellary.co
+note: >-
+  Cross-cutting runtime semantics, read from the provider's reference pages and from live response
+  headers. Nothing here is derived from an OpenAPI -- Stellary publishes none.
+
+auth_style:
+  scheme: Bearer
+  header: 'Authorization: Bearer <jwt-or-personal-access-token>'
+  fallback: authenticated session cookie used by the web app (first-party only)
+  oauth: OAuth 2.1 + PKCE S256 + RFC 7591 dynamic client registration, discoverable at /.well-known/oauth-authorization-server
+  see: authentication/stellary-authentication.yml
+
+base_url:
+  rest: https://api.stellary.co
+  mcp: https://api.stellary.co/mcp
+  prefix: none
+  prefix_note: >-
+    Stellary explicitly does NOT mount resource routes behind a global /api prefix; REST endpoints
+    live at the application root. /api/docs is a non-production-only Swagger UI mount.
+  health: 'GET https://api.stellary.co/ returns {"status":"ok","app":"Stellary"} unauthenticated (observed 200)'
+
+content_types:
+  request: application/json
+  uploads: multipart/form-data (card attachments)
+  response: application/json; charset=utf-8
+
+resource_hierarchy:
+  pattern: organization -> workspace -> project -> scope -> card
+  examples:
+  - /organizations/:orgSlug
+  - /orgs/:orgSlug/workspaces/:wsSlug
+  - /orgs/:orgSlug/workspaces/:wsSlug/projects/:projectId
+  - /orgs/:orgSlug/workspaces/:wsSlug/projects/:projectId/scopes/:scopeId
+  - /orgs/:orgSlug/workspaces/:wsSlug/projects/:projectId/cards/:cardId
+  note: >-
+    Two different org path segments coexist -- /organizations/:orgSlug for tenancy and billing,
+    /orgs/:orgSlug/... for everything workspace-scoped. Both are the provider's, verbatim from the
+    reference; this is a real inconsistency an integrator has to know about.
+  identifiers: >-
+    Organizations and workspaces are addressed by SLUG; projects, cards and documents by ID.
+    Documented id prefixes seen in examples: usr_, prj_, card_, tok_, usr_agent_.
+
+idempotency:
+  supported: false
+  status: absent
+  header: null
+  evidence: >-
+    No Idempotency-Key header, no idempotent-retry guidance and no request-deduplication semantics
+    appear anywhere in the REST reference, the MCP guide or the provider's own SKILL.md. Checked
+    2026-09-01. The write surface includes create_card and create_cards_bulk, so this is a real gap
+    for an agent that must retry safely, not an artifact of a thin doc.
+
+pagination:
+  style: undocumented
+  evidence: >-
+    The REST reference lists list endpoints (GET /organizations, /notifications, card lists,
+    document trees) but documents no limit/offset/cursor parameters and no pagination envelope on
+    any of them. A dedicated /documents/all "full workspace document tree" route is documented,
+    which suggests unpaginated reads. Recorded as undocumented rather than as "none" -- an
+    unauthenticated caller cannot observe list responses.
+
+filtering_and_expansion:
+  field_expansion: not documented
+  sparse_fields: not documented
+  note: MCP board tools accept name-based lookup with exact-or-fuzzy matching; the provider warns to discover IDs first and reuse them.
+
+metadata:
+  custom_fields: >-
+    Custom fields are a first-class product feature with a per-plan quota (5 on Discovery, 50 on
+    Beta Tester) rather than a free-form API metadata bag.
+  tags: Documents accept a tags[] array.
+
+request_tracing:
+  supported: true
+  request_id_header: X-Request-ID
+  exposed_via: 'Access-Control-Expose-Headers: X-Request-ID'
+  body_field: requestId
+  evidence: Observed on live 401/404 responses from api.stellary.co, both header and body field.
+
+versioning:
+  api_versioning: none
+  evidence: >-
+    No version segment in any documented path, no version header, no Accept media-type versioning.
+    The product versions (0.13.0) but the HTTP surface does not.
+  product_releases: semver, see changelog/stellary-changelog.yml
+  mcp_protocol: MCP Streamable HTTP, stateless (no Mcp-Session-Id required)
+
+error_envelope:
+  shape: '{statusCode, message, error, requestId}'
+  rfc9457: false
+  mcp_variant: '{error} only, on the /mcp transport gate'
+  see: errors/stellary-problem-types.yml
+
+rate_limit_signaling:
+  headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset]
+  observed_limit: 100 per 60s (anonymous)
+  retry_after: not observed
+  see: rate-limits/stellary-rate-limits.yml
+
+streaming:
+  sse: >-
+    POST /orgs/:orgSlug/workspaces/:wsSlug/agent-runtime/card-mission starts an SSE stream for
+    non-MCP agents; MCP-only agents get a queued mission and a JSON response instead.
+  long_poll: MCP wait_for_mission long-polls for queued work.
+  webhooks: none published
+
+reversibility:
+  applicable: true
+  grade: documented
+  grade_basis: >-
+    Several genuine reversal paths are documented, but NOT ONE of them carries a stated time
+    window. Per the rubric that is `documented` (0.4), not `verified` (1.0). No window is asserted
+    here because Stellary states none -- inventing one on a system that archives cards, revokes
+    credentials and completes missions would be worse than recording the gap.
+  surfaces:
+  - write: create a card / cards in bulk
+    operations: [POST /orgs/:orgSlug/workspaces/:wsSlug/projects/:projectId/cards, create_card, create_cards_bulk]
+    reversal: archive_card automation action (documented as a supported automation action; no documented DELETE route for a card in the public reference)
+    window: not stated
+    confidence: medium
+  - write: move a card between columns
+    operations: [move_card]
+    reversal: move_card again to the original column
+    window: not stated
+    note: Reversal is the same operation, not a dedicated undo; the caller must have recorded the prior column id.
+    confidence: high
+  - write: update card fields
+    operations: [update_card]
+    reversal: update_card with the prior values
+    window: not stated
+    note: No revision history or restore endpoint is documented for cards.
+    confidence: medium
+  - write: post a comment
+    operations: [POST .../cards/:cardId/comments, add_comment]
+    reversal: not documented
+    window: not stated
+    confidence: high
+  - write: link a document to a card
+    operations: [POST .../cards/:cardId/documents/:documentId/link]
+    reversal: not documented in the public reference (an unlink route is implied by the product but not published)
+    window: not stated
+    confidence: low
+  - write: issue a personal access token
+    operations: [POST /api-tokens]
+    reversal: revoke the token from Account settings -> API tokens; an optional expiresAt can be set at creation
+    window: not stated (revocation is immediate; expiry is caller-chosen)
+    confidence: high
+  - write: grant an MCP OAuth connection
+    operations: [OAuth authorization_code grant at https://api.stellary.co/authorize]
+    reversal: revoke from Workspace settings -> MCP connections, or POST https://api.stellary.co/revoke
+    window: not stated (revocation is immediate; access tokens live one hour)
+    confidence: high
+  - write: run an agent mission
+    operations: [agent-runtime/run, agent-runtime/card-mission, complete_mission, fail_mission]
+    reversal: >-
+      No undo. Prevention is the documented control instead: under supervised or approval autonomy
+      a non-read tool becomes a persisted PROPOSAL that a human approves or rejects
+      (list_pending_proposals, agent-runtime/proposals).
+    window: not stated
+    confidence: high
+  - write: billing checkout
+    operations: [POST /organizations/:orgSlug/billing/checkout]
+    reversal: not documented in the API reference; plans are month-to-month and cancellable in-app
+    window: not stated
+    confidence: low
+  summary: >-
+    An agent can undo a move and a field update by reissuing the same call, and can always revoke
+    its own credential. It cannot undo a comment, and it cannot undo a completed mission. The
+    strongest control Stellary offers is pre-commit, not post-commit: approval-mode autonomy turns
+    every non-read tool into a reviewable proposal.
+
+dry_run_mode:
+  supported: partial
+  detail: >-
+    No REST dry-run/preview parameter is documented. Pipelines do have a "debug test-run" (shipped
+    in 0.10.0), and approval-mode autonomy is functionally a rehearsal gate for agent writes.

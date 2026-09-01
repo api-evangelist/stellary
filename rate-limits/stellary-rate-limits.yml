@@ -1,0 +1,61 @@
+generated: '2026-09-01'
+method: probed
+source: live unauthenticated responses from https://api.stellary.co/ , /plugins , /organizations and /mcp
+docs: https://stellary.co/docs/mcp/
+note: >-
+  Stellary documents no numeric rate limits anywhere -- the docs only say "All requests are still
+  subject to Stellary permissions and rate limits". The numbers below were read off the response
+  headers of live unauthenticated requests, which is stronger evidence than a docs sentence but is
+  an anonymous-caller observation: an authenticated or paid caller may see a different ceiling.
+limit_count: 1
+limits:
+- scope: per-caller (anonymous, observed)
+  window: 60s
+  limit: 100
+  burst: null
+  applies_to: [https://api.stellary.co (REST), https://api.stellary.co/mcp (MCP)]
+  observed: true
+  evidence:
+  - url: https://api.stellary.co/
+    status: 200
+    headers:
+      x-ratelimit-limit: '100'
+      x-ratelimit-remaining: '98'
+      x-ratelimit-reset: '31'
+  - url: https://api.stellary.co/plugins
+    status: 401
+    headers:
+      x-ratelimit-limit: '100'
+      x-ratelimit-remaining: '99'
+      x-ratelimit-reset: '60'
+  - url: https://api.stellary.co/mcp
+    status: 401
+    method: POST tools/list
+    headers:
+      x-ratelimit-limit: '100'
+      x-ratelimit-remaining: '99'
+      x-ratelimit-reset: '60'
+response_headers:
+- name: X-RateLimit-Limit
+  meaning: Requests permitted in the current window.
+  observed_value: '100'
+- name: X-RateLimit-Remaining
+  meaning: Requests left in the current window.
+  observed_value: '99'
+- name: X-RateLimit-Reset
+  meaning: Seconds until the window resets. Observed counting down from 60.
+  observed_value: '60'
+- name: Retry-After
+  meaning: Not observed on any probed response.
+  observed: false
+exhaustion:
+  status_code: null
+  note: >-
+    Not observed and not documented. The probe deliberately stopped well short of 100 requests
+    rather than exhausting a live production quota, so the status code and body returned on
+    exhaustion are unknown. Do not assume 429.
+plan_limits:
+  note: >-
+    The published plans page states product quotas (workspaces, projects, members, AI agents,
+    documents, custom fields, automations, AI credits per month) but attaches no API request rate
+    to a tier. See plans/stellary-plans-pricing.yml.

@@ -1,12 +1,40 @@
 name: Stellary
-description: >-
-  AI-native project-management software for teams and AI agents, offering an AI Kanban board, knowledge base, cockpit
+aid: stellary
+description: AI-native project-management software for teams and AI agents, offering an AI Kanban board, knowledge base, cockpit
   dashboards, AI agent orchestration, automations, plugins, a built-in remote MCP server, and a REST API.
 url: https://raw.githubusercontent.com/api-evangelist/stellary-mcp-server/refs/heads/main/apis.yml
+image: https://stellary.co/logo.svg
 created: '2026-08-31'
-modified: '2026-08-31'
+modified: '2026-09-01'
 specificationVersion: '0.21'
 tags:
+- project-management
+- productivity
+- AI-agents
+- agent-orchestration
+- MCP
+- remote-mcp
+- developer-tools
+- SaaS
+- collaboration
+apis:
+- name: Stellary MCP Server
+  description: 'Hosted remote MCP server (streamable HTTP) exposing board read/write, cockpit supervision, agent runtime,
+    and auto-registered plugin tools. Bearer-authenticated. Listed in the official MCP registry as io.github.Anymfah/stellary-project-management
+    (active, v0.12.0).
+
+
+    No apis.json or OpenAPI is published; the declared apis.json at stellary.co/apis.json 404s. What is served is a 15KB llms.txt
+    and MCP documentation. Verified 2026-09-01.
+
+
+    The MCP endpoint does serve a real anonymous discovery chain: RFC 8414
+    authorization-server metadata at /.well-known/oauth-authorization-server (200) and RFC 9728 protected-resource metadata
+    at /.well-known/oauth-protected-resource/mcp (200), named verbatim by the 401 WWW-Authenticate challenge. Scopes:
+    projects:read, projects:write, pilotage:read, pilotage:write, offline_access. Probed 2026-09-01.'
+  humanURL: https://stellary.co/docs/mcp/
+  baseURL: https://api.stellary.co/mcp
+  tags:
   - project-management
   - productivity
   - AI-agents
@@ -16,56 +44,115 @@ tags:
   - developer-tools
   - SaaS
   - collaboration
-apis:
-  - name: Stellary MCP Server
-    description: >-
-      Hosted remote MCP server (streamable HTTP) exposing board read/write, cockpit supervision, agent runtime, and
-      auto-registered plugin tools. Bearer-authenticated. Listed in the official MCP registry as
-      io.github.Anymfah/stellary-project-management (active, v0.12.0).
-    humanURL: https://stellary.co/docs/mcp/
-    baseURL: https://api.stellary.co/mcp
-    tags:
-      - project-management
-      - productivity
-      - AI-agents
-      - agent-orchestration
-      - MCP
-      - remote-mcp
-      - developer-tools
-      - SaaS
-      - collaboration
-    properties:
-      - type: MCPServer
-        url: https://api.stellary.co/mcp
-      - type: Documentation
-        url: https://stellary.co/docs/mcp/
-      - type: LLMsTxt
-        url: https://stellary.co/llms.txt
-  - name: Stellary REST API
-    description: >-
-      REST API at the application root covering auth/identity, organizations/workspaces/projects, delivery (cards,
-      comments, attachments, labels), documents, AI runtime (agents, missions, drafts), platform (plugins, skills,
-      pipelines, automations), pilotage/cockpit, and billing. Bearer token auth via JWT or personal access token.
-    humanURL: https://stellary.co/docs/api/
-    baseURL: https://api.stellary.co
-    tags:
-      - project-management
-      - productivity
-      - AI-agents
-      - agent-orchestration
-      - MCP
-      - remote-mcp
-      - developer-tools
-      - SaaS
-      - collaboration
-    properties:
-      - type: Documentation
-        url: https://stellary.co/docs/api/
+  properties:
+  - type: MCPServer
+    url: https://api.stellary.co/mcp
+  - type: Documentation
+    url: https://stellary.co/docs/mcp/
+  - type: LLMsTxt
+    url: https://stellary.co/llms.txt
+- name: Stellary REST API
+  description: 'REST API at the application root covering auth/identity, organizations/workspaces/projects, delivery (cards,
+    comments, attachments, labels), documents, AI runtime (agents, missions, drafts), platform (plugins, skills, pipelines,
+    automations), pilotage/cockpit, and billing. Bearer token auth via JWT or personal access token.
+
+
+    No apis.json or OpenAPI is published; the declared apis.json at stellary.co/apis.json 404s. What is served is a 15KB llms.txt
+    and MCP documentation. Verified 2026-09-01.'
+  humanURL: https://stellary.co/docs/api/
+  baseURL: https://api.stellary.co
+  tags:
+  - project-management
+  - productivity
+  - AI-agents
+  - agent-orchestration
+  - MCP
+  - remote-mcp
+  - developer-tools
+  - SaaS
+  - collaboration
+  properties:
+  - type: Documentation
+    url: https://stellary.co/docs/api/
+  - type: MCPServer
+    url: https://api.stellary.co/mcp
+    description: 'Live MCP, gated: initialize returns 401 "Bearer token required". The endpoint is on api.stellary.co -- stellary.co/mcp
+      and /api/mcp both 301, and mcp.stellary.co serves a sitemap, so three of the four obvious guesses are wrong. Their docs
+      at stellary.co/docs/mcp/ name the right one. Verified 2026-09-01.'
+  - type: LLMsTxt
+    url: https://stellary.co/llms.txt
+  - type: Documentation
+    url: https://stellary.co/docs/mcp/
 maintainers:
-  - FN: Anymfah
-    url: https://github.com/Anymfah/stellary-mcp
+- FN: Anymfah
+  email: support@stellary.co
+  url: https://github.com/Anymfah/stellary-mcp
 generated:
   by: apis.io/add
   model: claude-opus-4-8
   confidence: 90
   at: '2026-08-31T22:42:09.571Z'
+common:
+- type: DomainSecurity
+  url: security/stellary-domain-security.yml
+- type: WellKnown
+  url: well-known/stellary-well-known.yml
+- type: MCPServer
+  url: mcp/stellary-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/stellary-llms.txt
+- type: Authentication
+  url: authentication/stellary-authentication.yml
+- type: OAuthScopes
+  url: scopes/stellary-scopes.yml
+- type: Conventions
+  url: conventions/stellary-conventions.yml
+- type: ErrorCatalog
+  url: errors/stellary-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/stellary-lifecycle.yml
+- type: ChangeLog
+  url: changelog/stellary-changelog.yml
+- type: ChangeLog
+  url: https://stellary.co/docs/changelog/
+- type: Plans
+  url: plans/stellary-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/stellary-rate-limits.yml
+- type: Conformance
+  url: conformance/stellary-conformance.yml
+- type: VulnerabilityDisclosure
+  url: security/stellary-vulnerability-disclosure.yml
+- type: Security
+  url: https://github.com/Anymfah/stellary-mcp/blob/main/SECURITY.md
+- type: DataModel
+  url: data-model/stellary-data-model.yml
+- type: DeveloperPortal
+  url: https://stellary.co/docs/
+- type: Documentation
+  url: https://stellary.co/docs/
+- type: APIReference
+  url: https://stellary.co/docs/api/
+- type: GettingStarted
+  url: https://stellary.co/docs/getting-started/
+- type: Support
+  url: https://discord.com/invite/ZwR26xNqVb
+- type: Blog
+  url: https://stellary.co/blog/
+- type: GitHubOrganization
+  url: https://github.com/Anymfah
+- type: Pricing
+  url: https://stellary.co/plans/
+- type: SignUp
+  url: https://app.stellary.co/register
+- type: TermsOfService
+  url: https://stellary.co/terms/
+- type: PrivacyPolicy
+  url: https://stellary.co/privacy/
+x-enrichment:
+  date: '2026-09-01'
+  status: enriched
+  artifacts_added: 21
+  pass: local-v1
