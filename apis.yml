@@ -3,6 +3,22 @@ aid: stellary
 description: AI-native project-management software for teams and AI agents, offering an AI Kanban board, knowledge base, cockpit
   dashboards, AI agent orchestration, automations, plugins, a built-in remote MCP server, and a REST API.
 url: https://raw.githubusercontent.com/api-evangelist/stellary-mcp-server/refs/heads/main/apis.yml
+accessModel:
+  pricing: free
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Free · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  - scopes
+  - rate-limits
+  - security
+  generated: '2026-09-02'
+  method: derived
 image: https://stellary.co/logo.svg
 created: '2026-08-31'
 modified: '2026-09-01'
