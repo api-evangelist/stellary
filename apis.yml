@@ -109,6 +109,8 @@ generated:
   confidence: 90
   at: '2026-08-31T22:42:09.571Z'
 common:
+- type: Website
+  url: https://www.stellary.co/
 - type: DomainSecurity
   url: security/stellary-domain-security.yml
 - type: WellKnown
