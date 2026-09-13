@@ -8,59 +8,61 @@ registry_url: https://registry.modelcontextprotocol.io/v0.1/servers/io.github.An
 repository: https://github.com/Anymfah/stellary-mcp
 documentation: https://stellary.co/docs/mcp/
 version: 0.13.0
-version_note: >-
-  server.json and every plugin manifest in the public discovery repo declare 0.13.0
-  (repo release tag 0.12.0, published 2026-08-30); the official MCP registry record still
-  shows 0.12.0 as latest, published 2026-07-27. Both numbers read 2026-09-01.
-
+version_note: server.json and every plugin manifest in the public discovery repo declare 0.13.0 (repo
+  release tag 0.12.0, published 2026-08-30); the official MCP registry record still shows 0.12.0 as latest,
+  published 2026-07-27. Both numbers read 2026-09-01.
 deployment:
   mode: remote
   endpoint: https://api.stellary.co/mcp
   auth: oauth
   verified: probed
-  note: >-
-    Remote only, and the provider says so explicitly: SKILL.md states "Not supported: local
-    npx/stdio servers or Dockerized copies of the backend", and the README says the hosted
-    application and server implementation are not distributed from the discovery repository.
-    Every client manifest in that repo (.mcp.json, .cursor-plugin, .claude-plugin,
-    .grok-plugin, gemini-extension.json, plugins/stellary/.mcp.json) points at the same
-    hosted URL with no install command. There is no npm/PyPI package -- the only package.json
-    in the repo is `stellary-mcp-registry-metadata`, marked private, and no `stellary*`
-    package exists on npm or PyPI.
-
+  note: 'Remote only, and the provider says so explicitly: SKILL.md states "Not supported: local npx/stdio
+    servers or Dockerized copies of the backend", and the README says the hosted application and server
+    implementation are not distributed from the discovery repository. Every client manifest in that repo
+    (.mcp.json, .cursor-plugin, .claude-plugin, .grok-plugin, gemini-extension.json, plugins/stellary/.mcp.json)
+    points at the same hosted URL with no install command. There is no npm/PyPI package -- the only package.json
+    in the repo is `stellary-mcp-registry-metadata`, marked private, and no `stellary*` package exists
+    on npm or PyPI.'
+  probe_prior: (never probed)
+  probe: gated
+  probe_why: RFC 9728 challenge on the MCP path only
+  checked: '2026-09-11'
+  source: claimed-backlog re-probe 2026-09-11
 transport:
   type: streamable-http
-  methods: [GET, POST]
+  methods:
+  - GET
+  - POST
   session: stateless
   session_note: A fresh transport is created per request; no Mcp-Session-Id is required.
-
 authentication:
   primary: OAuth 2.1 (PKCE S256, dynamic client registration, rotating refresh tokens)
   discovery:
     authorization_server_metadata: https://api.stellary.co/.well-known/oauth-authorization-server
     protected_resource_metadata: https://api.stellary.co/.well-known/oauth-protected-resource/mcp
-  scopes: [projects:read, projects:write, pilotage:read, pilotage:write, offline_access]
+  scopes:
+  - projects:read
+  - projects:write
+  - pilotage:read
+  - pilotage:write
+  - offline_access
   access_token_lifetime: 1 hour
   alternatives:
   - Personal access token (Bearer, prefix sl_) for clients that cannot complete remote OAuth
   - User JWT from the /auth flows
   - Agent token for workspace agents running queued missions
   - MCP_TOKEN, a transport gate only -- not sufficient for tools that need a user or agent identity
-
 x-evidence:
   fetched: '2026-09-01'
   probe: POST https://api.stellary.co/mcp {"jsonrpc":"2.0","id":1,"method":"tools/list"}
   http_status: 401
   body: '{"error":"Bearer token required"}'
-  www_authenticate: >-
-    Bearer resource_metadata="https://api.stellary.co/.well-known/oauth-protected-resource/mcp",
+  www_authenticate: Bearer resource_metadata="https://api.stellary.co/.well-known/oauth-protected-resource/mcp",
     scope="projects:read projects:write pilotage:read pilotage:write"
-  conclusion: >-
-    The server is live and correctly implements the MCP OAuth challenge, so tools/list cannot be
-    introspected anonymously. The tool list below is the provider-published one from
-    stellary.co/docs/mcp/ and the provider-authored SKILL.md -- names and descriptions only.
-    Input schemas require an authenticated tools/list.
-
+  conclusion: The server is live and correctly implements the MCP OAuth challenge, so tools/list cannot
+    be introspected anonymously. The tool list below is the provider-published one from stellary.co/docs/mcp/
+    and the provider-authored SKILL.md -- names and descriptions only. Input schemas require an authenticated
+    tools/list.
 tools_source: published (docs + provider SKILL.md); input schemas NOT available anonymously
 tool_groups:
 - name: Board read
@@ -119,15 +121,13 @@ tool_groups:
   identity: any
   tools:
   - name: stellary_list_identities
-    description: >-
-      List the opaque identity references an OAuth connection authorized. With more than one
+    description: List the opaque identity references an OAuth connection authorized. With more than one
       identity, actingAs is required on every call.
 - name: Plugin-registered tools
   identity: agent/workspace context with decrypted plugin config
-  note: >-
-    Installed workspace plugins auto-register tools prefixed by plugin slug. Documented plugin
-    families are GitHub, Slack, Email, Discord and X. The exact list is workspace-dependent, so
-    only the documented examples are recorded here -- never assume the full set.
+  note: Installed workspace plugins auto-register tools prefixed by plugin slug. Documented plugin families
+    are GitHub, Slack, Email, Discord and X. The exact list is workspace-dependent, so only the documented
+    examples are recorded here -- never assume the full set.
   tools:
   - name: github_list_repos
   - name: github_create_pr
@@ -135,7 +135,6 @@ tool_groups:
   - name: email_send_email
   - name: discord_post_message
   - name: x_create_draft
-
 governance:
   autonomy_modes:
   - mode: autonomous
@@ -147,10 +146,8 @@ governance:
   - mode: approval
     reads: execute
     writes: every non-read tool becomes a persisted proposal
-  note: >-
-    Autonomy proposal checks apply to agent tokens only. A human acting through MCP acts as
-    themselves and writes execute directly, still subject to permissions and scopes.
-
+  note: Autonomy proposal checks apply to agent tokens only. A human acting through MCP acts as themselves
+    and writes execute directly, still subject to permissions and scopes.
 clients_documented:
 - Claude Code (claude mcp add stellary --transport streamable-http https://api.stellary.co/mcp)
 - Cursor (mcpServers.stellary.url)
