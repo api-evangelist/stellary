@@ -24,6 +24,16 @@ created: '2026-08-31'
 modified: '2026-09-01'
 specificationVersion: '0.21'
 tags:
+- Project Management
+- Productivity
+- AI Agents
+- Agent Orchestration
+- MCP
+- Remote MCP
+- Developer Tools
+- Software-as-a-Service
+- Collaboration
+tags_raw:
 - project-management
 - productivity
 - AI-agents
@@ -51,6 +61,16 @@ apis:
   humanURL: https://stellary.co/docs/mcp/
   baseURL: https://api.stellary.co/mcp
   tags:
+  - Project Management
+  - Productivity
+  - AI Agents
+  - Agent Orchestration
+  - MCP
+  - Remote MCP
+  - Developer Tools
+  - Software-as-a-Service
+  - Collaboration
+  tags_raw:
   - project-management
   - productivity
   - AI-agents
@@ -78,6 +98,16 @@ apis:
   humanURL: https://stellary.co/docs/api/
   baseURL: https://api.stellary.co
   tags:
+  - Project Management
+  - Productivity
+  - AI Agents
+  - Agent Orchestration
+  - MCP
+  - Remote MCP
+  - Developer Tools
+  - Software-as-a-Service
+  - Collaboration
+  tags_raw:
   - project-management
   - productivity
   - AI-agents
