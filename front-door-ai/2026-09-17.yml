@@ -1,0 +1,29 @@
+# Front Door AI Index — stellary — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: stellary
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.stellary.co
+  final_host: stellary.co
+  ownership: own
+  owner: stellary
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 41
+  host_score: 41
+  density: 28.14
+  words: 1457
+  tiers:
+    agentic: 18
+    core: 22
+    model: 1
+  ambiguous: 41
+  top_terms:
+    agent: 41
+    AI: 22
+    MCP: 11
+    AI agent: 7
+    Claude: 1

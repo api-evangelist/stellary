@@ -1,31 +1,33 @@
-generated: '2026-09-01'
+generated: '2026-09-19'
 method: probed
 source: live GET of the named /.well-known/ path list on every apis.yml baseURL host and the docs host
-note: >-
-  Two real documents are served, both on the API host and both part of the MCP OAuth 2.1
-  discovery chain: RFC 8414 authorization-server metadata at the host root, and RFC 9728
-  protected-resource metadata at the resource-suffixed path /.well-known/oauth-protected-resource/mcp
-  (the plain /.well-known/oauth-protected-resource 404s -- the suffixed path is the one the
-  401 WWW-Authenticate challenge on https://api.stellary.co/mcp names). No security.txt,
-  no api-catalog, no ai-plugin.json, no agent card. Every /.well-known/* path on the marketing
-  host stellary.co returns 404 with a Next.js HTML error page, not a document.
+note: 'Two real documents are served, both on the API host and both part of the MCP OAuth 2.1 discovery
+  chain: RFC 8414 authorization-server metadata at the host root, and RFC 9728 protected-resource metadata
+  at the resource-suffixed path /.well-known/oauth-protected-resource/mcp (the plain /.well-known/oauth-protected-resource
+  404s -- the suffixed path is the one the 401 WWW-Authenticate challenge on https://api.stellary.co/mcp
+  names). No security.txt, no api-catalog, no ai-plugin.json, no agent card. Every /.well-known/* path
+  on the marketing host stellary.co returns 404 with a Next.js HTML error page, not a document.
+
+
+  MCP-host OAuth discovery added 2026-09-19 (roadmap#321/#337): the harvest visits a provider''s primary
+  hosts, and RFC 9728 protected-resource metadata lives on the MCP host, so these documents existed and
+  were invisible to the scorer. Fetched live and validated on `resource`/`issuer`; one negative control
+  per host.'
 hosts:
 - host: api.stellary.co
   documents:
   - path: /.well-known/oauth-authorization-server
     status: 200
-    file: well-known/stellary-oauth-authorization-server.json
+    file: stellary-oauth-authorization-server.json
     content_type: application/json
     standard: RFC 8414
   - path: /.well-known/oauth-protected-resource/mcp
     status: 200
-    file: well-known/stellary-oauth-protected-resource-mcp.json
+    file: stellary-oauth-protected-resource-mcp.json
     content_type: application/json
     standard: RFC 9728
-    note: >-
-      Advertised verbatim by the MCP endpoint's 401 challenge:
-      WWW-Authenticate: Bearer resource_metadata="https://api.stellary.co/.well-known/oauth-protected-resource/mcp",
-      scope="projects:read projects:write pilotage:read pilotage:write"
+    note: 'Advertised verbatim by the MCP endpoint''s 401 challenge: WWW-Authenticate: Bearer resource_metadata="https://api.stellary.co/.well-known/oauth-protected-resource/mcp",
+      scope="projects:read projects:write pilotage:read pilotage:write"'
   - path: /.well-known/oauth-protected-resource
     status: 404
   - path: /.well-known/security.txt
@@ -42,6 +44,15 @@ hosts:
     status: 404
   - path: /.well-known/aauth-resource.json
     status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: stellary-api-oauth-protected-resource.json
+    bytes: 287
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: stellary-api-oauth-authorization-server.json
+    bytes: 702
+  path_echo_control: passed
 - host: stellary.co
   documents:
   - path: /.well-known/security.txt
@@ -62,3 +73,15 @@ hosts:
     status: 404
   - path: /.well-known/aauth-resource.json
     status: 404
+x-mcp-probe:
+  probed: '2026-09-19'
+  issue: roadmap#321, roadmap#337
+  documents:
+  - host: https://api.stellary.co
+    path: /.well-known/oauth-protected-resource
+    file: stellary-api-oauth-protected-resource.json
+  - host: https://api.stellary.co
+    path: /.well-known/oauth-authorization-server
+    file: stellary-api-oauth-authorization-server.json
+  validated_on: resource (RFC 9728) / issuer (RFC 8414, OIDC)
+  negative_control: one per host; a 2xx JSON object at an impossible path discards the host
