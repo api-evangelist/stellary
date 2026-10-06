@@ -21,7 +21,7 @@ accessModel:
   method: derived
 image: https://stellary.co/logo.svg
 created: '2026-08-31'
-modified: '2026-09-01'
+modified: '2026-10-06'
 specificationVersion: '0.21'
 tags:
 - Project Management
@@ -139,6 +139,8 @@ generated:
   confidence: 90
   at: '2026-08-31T22:42:09.571Z'
 common:
+- url: https://stellary.co/feed.xml
+  type: BlogRSS
 - type: Website
   url: https://www.stellary.co/
 - type: DomainSecurity
