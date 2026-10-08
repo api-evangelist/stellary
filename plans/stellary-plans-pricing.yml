@@ -60,3 +60,24 @@ self_service:
   note: >-
     Organization settings expose available plans, current usage, invoices and billing actions;
     plan changes are made in-app.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - metered
+  units: []
+  plans:
+  - name: Discovery
+    access: other
+    model: metered
+    model_how: derived
+    units: []
+    periods:
+    - month
+  - name: Beta Tester
+    access: other
+    model: metered
+    model_how: derived
+    units: []
+    periods:
+    - month
