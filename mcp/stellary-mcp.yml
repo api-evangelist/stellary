@@ -156,3 +156,22 @@ clients_documented:
 - Codex / ChatGPT
 - LM Studio
 - AnythingLLM
+rfc9728:
+  endpoint: https://api.stellary.co/mcp
+  metadata_url: https://api.stellary.co/.well-known/oauth-protected-resource/mcp
+  discovered_via: WWW-Authenticate resource_metadata on an anonymous POST initialize
+  fetched: '2026-09-25'
+  http_status: 200
+  content_type: application/json
+  document:
+    resource: https://api.stellary.co/mcp
+    authorization_servers:
+    - https://api.stellary.co/
+    scopes_supported:
+    - projects:read
+    - projects:write
+    - pilotage:read
+    - pilotage:write
+    - offline_access
+    resource_name: Stellary MCP
+    resource_documentation: https://stellary.co/docs/mcp/
