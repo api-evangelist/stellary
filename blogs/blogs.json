@@ -2,6 +2,20 @@
   "repo": "stellary",
   "feeds": [
     {
+      "source": "https://stellary.co/blog/",
+      "feed_url": "https://stellary.co/blog/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    },
+    {
+      "source": "https://stellary.co/feed.xml",
+      "feed_url": "https://stellary.co/feed.xml",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
       "source": "https://discord.com/invite/ZwR26xNqVb",
       "feed_url": "https://discord.com/invite/ZwR26xNqVb",
       "title": "",
@@ -10,5 +24,5 @@
     }
   ],
   "post_count": 0,
-  "fetched": "2026-10-03T12:30:02Z"
+  "fetched": "2026-10-10T13:15:00Z"
 }
